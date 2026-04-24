@@ -1,2 +1,4 @@
 # staylytics
-An interactive analytics web application for exploring and understanding the Airbnb market.
+Staylytics is an interactive analytics web application designed to explore and understand the Airbnb rental market in London.
+
+It goes beyond a traditional dashboard by allowing users to filter, analyse, and interpret listing data through dynamic visualisations and intelligent insights.
