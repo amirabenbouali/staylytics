@@ -1,16 +1,28 @@
-# React + Vite
+# Staylytics
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Staylytics is an interactive analytics web application for exploring the Airbnb rental market in London.
 
-Currently, two official plugins are available:
+It helps users filter, analyse, and interpret listing data through dynamic visualisations, pricing analytics, and rule-based market insights.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- Recharts
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Overview dashboard for London Airbnb listings
+- Prices page with pricing KPIs, distributions, rankings, and insights
+- Borough, room type, and price filters
+- Rule-based AI-style summaries
+- Responsive SaaS-style dashboard layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Run Locally
+
+```bash
+npm install
+npm run dev
+```
