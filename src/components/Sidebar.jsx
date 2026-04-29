@@ -87,8 +87,33 @@ function Icon({ name }) {
 
 function Sidebar({ activePage, onNavigate }) {
   return (
-    <aside className="hidden w-[224px] shrink-0 border-r border-[#E6EAF0] bg-white px-4 py-7 lg:flex lg:flex-col">
-      <div className="mb-16 flex items-center gap-3 px-2 text-[#FF5A5F]">
+    <>
+      <header className="sticky top-0 z-50 border-b border-[#ECE7DF] bg-white/95 px-4 py-3 backdrop-blur lg:hidden">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-[#FF5A5F]">
+            <svg width="26" height="26" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <path d="M32 12c-6 9-14 22-14 30a14 14 0 0 0 28 0c0-8-8-21-14-30Z" stroke="currentColor" strokeWidth="3" />
+              <path d="M24 42c5-7 11-12 16-16" stroke="currentColor" strokeWidth="3" />
+              <path d="M40 42c-5-7-11-12-16-16" stroke="currentColor" strokeWidth="3" />
+            </svg>
+            <span className="text-lg font-bold text-[#111827]">staylytics</span>
+          </div>
+          <select
+            className="h-10 rounded-xl border border-[#DED8CF] bg-white px-3 text-sm font-semibold text-[#111827] outline-none focus:border-[#FF5A5F] focus:ring-4 focus:ring-[#FF5A5F]/10"
+            value={activePage}
+            onChange={(event) => onNavigate(event.target.value)}
+          >
+            {navItems.map((item) => (
+              <option key={item.page} value={item.page}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </header>
+
+      <aside className="hidden w-[224px] shrink-0 border-r border-[#E6EAF0] bg-white px-4 py-6 lg:flex lg:flex-col">
+        <div className="mb-12 flex items-center gap-3 px-2 text-[#FF5A5F]">
         <svg width="30" height="30" viewBox="0 0 64 64" fill="none" aria-hidden="true">
           <path
             d="M32 12c-6 9-14 22-14 30a14 14 0 0 0 28 0c0-8-8-21-14-30Z"
@@ -99,31 +124,32 @@ function Sidebar({ activePage, onNavigate }) {
           <path d="M40 42c-5-7-11-12-16-16" stroke="currentColor" strokeWidth="3" />
         </svg>
         <span className="text-xl font-bold text-[#111827]">staylytics</span>
-      </div>
+        </div>
 
-      <nav className="space-y-3">
-        {navItems.map((item) => (
-          <button
-            key={item.label}
-            type="button"
-            className={`flex w-full items-center gap-4 rounded-xl px-4 py-3 text-left text-sm font-semibold transition ${
-              activePage === item.page
-                ? 'bg-[#FFF0F0] text-[#FF5A5F]'
-                : 'text-[#111827] hover:bg-[#F8F7F4]'
-            }`}
-            onClick={() => onNavigate(item.page)}
-          >
-            <Icon name={item.icon} />
-            {item.label}
-          </button>
-        ))}
-      </nav>
+        <nav className="space-y-2">
+          {navItems.map((item) => (
+            <button
+              key={item.label}
+              type="button"
+              className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold transition hover:translate-x-0.5 ${
+                activePage === item.page
+                  ? 'bg-[#FFF0F0] text-[#FF5A5F] shadow-sm'
+                  : 'text-[#111827] hover:bg-[#F8F7F4]'
+              }`}
+              onClick={() => onNavigate(item.page)}
+            >
+              <Icon name={item.icon} />
+              {item.label}
+            </button>
+          ))}
+        </nav>
 
-      <div className="mt-auto rounded-xl border border-[#F0E4E0] bg-white p-5 text-xs leading-5 text-[#41516B] shadow-sm">
-        <p className="font-bold text-[#FF5A5F]">Pro Tip</p>
-        <p className="mt-3">Use filters to explore specific areas and room types.</p>
-      </div>
-    </aside>
+        <div className="mt-auto rounded-xl border border-[#F0E4E0] bg-white p-4 text-xs leading-5 text-[#41516B] shadow-sm">
+          <p className="font-bold text-[#FF5A5F]">Pro Tip</p>
+          <p className="mt-3">Use filters to explore specific areas and room types.</p>
+        </div>
+      </aside>
+    </>
   )
 }
 

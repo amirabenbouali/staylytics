@@ -1,14 +1,9 @@
-const MAX_REALISTIC_PRICE = 10000
-const DEFAULT_MIN_LISTINGS = 10
+import { PRICE_BUCKETS, THRESHOLDS } from '../constants/market'
 
-export const PRICE_BUCKETS = [
-  { label: '£0-£50', min: 0, max: 50 },
-  { label: '£51-£100', min: 51, max: 100 },
-  { label: '£101-£150', min: 101, max: 150 },
-  { label: '£151-£200', min: 151, max: 200 },
-  { label: '£201-£300', min: 201, max: 300 },
-  { label: '£301+', min: 301, max: Infinity },
-]
+const MAX_REALISTIC_PRICE = THRESHOLDS.maxRealisticPrice
+const DEFAULT_MIN_LISTINGS = THRESHOLDS.minBoroughListings
+
+export { PRICE_BUCKETS }
 
 export function cleanPrice(value) {
   if (value === null || value === undefined || value === '') return null
@@ -37,6 +32,8 @@ function normaliseListing(listing) {
   const price = cleanPrice(listing.price)
   if (price === null) return null
 
+  const roomType = listing.roomType ?? listing.room_type
+
   return {
     ...listing,
     borough: getBorough(listing),
@@ -45,7 +42,7 @@ function normaliseListing(listing) {
     listingCount: getListingWeight(listing),
     reviews: Number(listing.reviews ?? listing.number_of_reviews ?? 0) || 0,
     availability: Number(listing.availability ?? listing.availability_365 ?? 0) || 0,
-    room_type: listing.room_type || 'Unknown',
+    roomType: roomType || 'Unknown',
   }
 }
 
@@ -159,9 +156,9 @@ export function groupByRoomType(data) {
   const groups = new Map()
 
   getValidListings(data).forEach((listing) => {
-    const current = groups.get(listing.room_type) ?? {
-      roomType: listing.room_type,
-      name: listing.room_type,
+    const current = groups.get(listing.roomType) ?? {
+      roomType: listing.roomType,
+      name: listing.roomType,
       listings: 0,
       value: 0,
       priceEntries: [],
@@ -170,7 +167,7 @@ export function groupByRoomType(data) {
     current.listings += listing.listingCount
     current.value += listing.listingCount
     current.priceEntries.push({ price: listing.price, weight: listing.listingCount })
-    groups.set(listing.room_type, current)
+    groups.set(listing.roomType, current)
   })
 
   return [...groups.values()]
@@ -204,8 +201,8 @@ export function getPriceVsReviews(data) {
     price: listing.price,
     reviews: listing.reviews,
     number_of_reviews: listing.reviews,
-    room_type: listing.room_type,
-    category: listing.room_type,
+    roomType: listing.roomType,
+    category: listing.roomType,
     borough: listing.borough,
     listings: listing.listingCount,
   }))

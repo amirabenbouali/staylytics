@@ -1,22 +1,9 @@
-export const priceRangeOptions = [
-  { label: 'All prices', value: 'all' },
-  { label: 'Under £100', value: 'budget' },
-  { label: '£100-£180', value: 'mid' },
-  { label: '£180+', value: 'premium' },
-]
+import { CHART_COLORS, PRICE_RANGE_OPTIONS } from '../constants/market'
+import { filterListings, inPriceRange } from './filters'
 
-export const chartColors = {
-  accent: '#FF5A5F',
-  softAccent: '#FFE8E9',
-  grid: '#EAE7E1',
-  text: '#5F6368',
-  rooms: {
-    'Entire home/apt': '#FF5A5F',
-    'Private room': '#FF9A8B',
-    'Hotel room': '#F6C5B6',
-    'Shared room': '#C8D8D2',
-  },
-}
+export const priceRangeOptions = PRICE_RANGE_OPTIONS
+export const chartColors = CHART_COLORS
+export { filterListings, inPriceRange }
 
 export const formatCurrency = (value) =>
   new Intl.NumberFormat('en-GB', {
@@ -30,26 +17,8 @@ export const formatNumber = (value) => new Intl.NumberFormat('en-GB').format(val
 export const round = (value) => Math.round(value || 0)
 
 export const getUniqueValues = (records, key) => [
-  ...new Set(records.map((record) => record[key])),
+  ...new Set(records.map((record) => record[key]).filter(Boolean)),
 ]
-
-export const inPriceRange = (price, range) => {
-  if (range === 'budget') return price < 100
-  if (range === 'mid') return price >= 100 && price <= 180
-  if (range === 'premium') return price > 180
-  return true
-}
-
-export const filterListings = (records, filters) =>
-  records.filter((listing) => {
-    const boroughMatch =
-      filters.borough === 'All boroughs' || listing.borough === filters.borough
-    const roomTypeMatch =
-      filters.roomType === 'All room types' || listing.room_type === filters.roomType
-    const priceMatch = inPriceRange(listing.price, filters.priceRange)
-
-    return boroughMatch && roomTypeMatch && priceMatch
-  })
 
 export const getAverage = (records, key) => {
   const totalListings = getTotalListings(records)
@@ -101,8 +70,9 @@ export const aggregateByBorough = (records) => {
 export const getRoomTypeDistribution = (records) =>
   Object.entries(
     records.reduce((accumulator, listing) => {
-      accumulator[listing.room_type] =
-        (accumulator[listing.room_type] ?? 0) + getListingWeight(listing)
+      const roomType = listing.roomType ?? listing.room_type
+      accumulator[roomType] =
+        (accumulator[roomType] ?? 0) + getListingWeight(listing)
       return accumulator
     }, {}),
   )
